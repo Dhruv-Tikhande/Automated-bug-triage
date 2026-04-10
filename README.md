@@ -8,7 +8,7 @@ Monorepo with:
 ## 🚀 How to Run Locally
 
 ### 1. Clone the Repository
-`git clone https://github.com/YOUR_USERNAME/automated-bug-triage.git`
+`git clone https://github.com/Dhruv-Tikhande/automated-bug-triage.git`
 `cd automated-bug-triage`
 
 ### 2. Setup the Machine Learning Backend
