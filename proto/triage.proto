@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package triage;
+
+// The Triage Service definition
+service BugTriage {
+  // Sends a bug report and returns the triage prediction
+  rpc AnalyzeBug (BugRequest) returns (TriageResponse) {}
+}
+
+// The request message containing the bug details
+message BugRequest {
+  string bug_title = 1;
+  string bug_description = 2;
+  int32 lamport_time = 3;
+}
+
+// The response message containing ML predictions
+message TriageResponse {
+  string predicted_priority = 1;
+  string predicted_severity = 2;
+  string suggested_assignee = 3;
+  int32 lamport_time = 4;
+}

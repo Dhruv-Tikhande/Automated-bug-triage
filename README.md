@@ -1,33 +1,52 @@
 # Automated Bug Triage & QA Dashboard
 
-Monorepo with:
+A small full-stack prototype for routing bug reports to likely engineering teams using a neural network plus a Bayesian-network feature. The repository combines a React dashboard with a Python inference backend and a separate gRPC prototype.
 
-- `frontend/`: React + Vite + Tailwind + Recharts dashboard UI
-- `backend/`: FastAPI mock service for triage predictions
+## What it does
 
-## 🚀 How to Run Locally
+- Accepts a bug description and suspected module in the UI.
+- Sends the report to a FastAPI endpoint that predicts:
+  - assigned team
+  - confidence score
+  - flakiness probability
+- Uses a trained TensorFlow model together with probabilities derived from the NetBeans-style dataset.
 
-### 1. Clone the Repository
-`git clone https://github.com/YOUR_USERNAME/automated-bug-triage.git`
-`cd automated-bug-triage`
+## Tech stack
 
-### 2. Setup the Machine Learning Backend
-Open a terminal and navigate to the `backend` folder:
-`cd backend`
-`pip install -r requirements.txt`
+- Frontend: React, Vite, Tailwind CSS, Recharts
+- Backend: FastAPI, Pydantic, TensorFlow/Keras, scikit-learn, pgmpy
+- Data: NetBeans-style CSV data in the repo root
+- RPC prototype: gRPC + Protocol Buffers
 
-**Train the AI Models (Crucial Step):**
-Because model files are large, they are not stored in this repository. You must generate them locally using the provided dataset.
-`python train_model.py`
-*(This will read `data/netbeans_bugs.csv` and generate the `.h5` and `.pkl` files needed for the API).*
+## Local setup
 
-**Start the FastAPI Server:**
-`uvicorn main:app --reload`
+1. Create and activate a Python environment in the backend folder.
+2. Install backend dependencies:
+   - `pip install -r backend/requirements.txt`
+3. Install frontend dependencies:
+   - `cd frontend && npm install`
+4. Train the model artifacts locally from the repo root:
+   - `python train_ai.py`
+   - `python train_ann.py`
+5. Start the backend:
+   - `cd backend && uvicorn main:app --reload`
+   - or `python backend/main.py`
+6. Start the frontend:
+   - `cd frontend && npm run dev`
 
-### 3. Setup the React Frontend
-Open a *new* terminal and navigate to the `frontend` folder:
-`cd frontend`
-`npm install`
-`npm start`
+The default frontend URL is `http://localhost:5173` and the backend API is `http://localhost:8000`.
 
-The UI will now be running on `localhost:3000` and connected to the AI backend!
+## Project layout
+
+- [backend/main.py](backend/main.py): FastAPI app, model loading, and prediction endpoint.
+- [train_ai.py](train_ai.py): builds the Bayesian-network probability lookup.
+- [train_ann.py](train_ann.py): trains the neural network and saves model artifacts.
+- [frontend/src/App.jsx](frontend/src/App.jsx): main dashboard UI and API client.
+- [proto/triage.proto](proto/triage.proto): gRPC contract for the separate RPC prototype.
+- [triage_server.py](triage_server.py) and [triage_client.py](triage_client.py): standalone gRPC example.
+
+## Development notes
+
+- The frontend calls the FastAPI endpoint directly; the gRPC service is not wired into the UI.
+- Model files are generated locally and are intentionally ignored by git.
+- The current training scripts and backend paths should be normalized before relying on them for repeatable runs.

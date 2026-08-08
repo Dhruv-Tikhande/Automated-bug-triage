@@ -1,15 +1,20 @@
-# Python
+# Machine Learning Models (Generated locally, do not push!)
+*.h5
+*.pkl
+*.joblib
+*.keras
+
+# Python / Virtual Environments
 __pycache__/
-*.py[cod]
-.venv/
 venv/
+env/
+.env
 
-# Node
+# Node / React Frontend
 node_modules/
+build/
 dist/
+npm-debug.log
 
-# OS / editor
+# OS generated files
 .DS_Store
-Thumbs.db
-.idea/
-.vscode/
