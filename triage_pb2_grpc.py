@@ -99,3 +99,78 @@ class BugTriage:
             timeout,
             metadata,
             _registered_method=True)
+
+
+class MutexServiceStub:
+    """Peer-to-peer mutual exclusion service for Ricart-Agrawala.
+    """
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.RequestAccess = channel.unary_unary(
+                '/triage.MutexService/RequestAccess',
+                request_serializer=triage__pb2.AccessRequest.SerializeToString,
+                response_deserializer=triage__pb2.AccessReply.FromString,
+                _registered_method=True)
+
+
+class MutexServiceServicer:
+    """Peer-to-peer mutual exclusion service for Ricart-Agrawala.
+    """
+
+    def RequestAccess(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_MutexServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'RequestAccess': grpc.unary_unary_rpc_method_handler(
+                    servicer.RequestAccess,
+                    request_deserializer=triage__pb2.AccessRequest.FromString,
+                    response_serializer=triage__pb2.AccessReply.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'triage.MutexService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('triage.MutexService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class MutexService:
+    """Peer-to-peer mutual exclusion service for Ricart-Agrawala.
+    """
+
+    @staticmethod
+    def RequestAccess(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/triage.MutexService/RequestAccess',
+            triage__pb2.AccessRequest.SerializeToString,
+            triage__pb2.AccessReply.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
