@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0ctriage.proto\x12\x06triage\"N\n\nBugRequest\x12\x11\n\tbug_title\x18\x01 \x01(\t\x12\x17\n\x0f\x62ug_description\x18\x02 \x01(\t\x12\x14\n\x0clamport_time\x18\x03 \x01(\x05\"z\n\x0eTriageResponse\x12\x1a\n\x12predicted_priority\x18\x01 \x01(\t\x12\x1a\n\x12predicted_severity\x18\x02 \x01(\t\x12\x1a\n\x12suggested_assignee\x18\x03 \x01(\t\x12\x14\n\x0clamport_time\x18\x04 \x01(\x05\"3\n\rAccessRequest\x12\x0f\n\x07node_id\x18\x01 \x01(\x05\x12\x11\n\ttimestamp\x18\x02 \x01(\x05\"1\n\x0b\x41\x63\x63\x65ssReply\x12\x0f\n\x07node_id\x18\x01 \x01(\x05\x12\x11\n\ttimestamp\x18\x02 \x01(\x05\x32G\n\tBugTriage\x12:\n\nAnalyzeBug\x12\x12.triage.BugRequest\x1a\x16.triage.TriageResponse\"\x00\x32M\n\x0cMutexService\x12=\n\rRequestAccess\x12\x15.triage.AccessRequest\x1a\x13.triage.AccessReply\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0ctriage.proto\x12\x06triage\"N\n\nBugRequest\x12\x11\n\tbug_title\x18\x01 \x01(\t\x12\x17\n\x0f\x62ug_description\x18\x02 \x01(\t\x12\x14\n\x0clamport_time\x18\x03 \x01(\x05\"z\n\x0eTriageResponse\x12\x1a\n\x12predicted_priority\x18\x01 \x01(\t\x12\x1a\n\x12predicted_severity\x18\x02 \x01(\t\x12\x1a\n\x12suggested_assignee\x18\x03 \x01(\t\x12\x14\n\x0clamport_time\x18\x04 \x01(\x05\"3\n\rAccessRequest\x12\x0f\n\x07node_id\x18\x01 \x01(\x05\x12\x11\n\ttimestamp\x18\x02 \x01(\x05\"1\n\x0b\x41\x63\x63\x65ssReply\x12\x0f\n\x07node_id\x18\x01 \x01(\x05\x12\x11\n\ttimestamp\x18\x02 \x01(\x05\"H\n\x0bLockRequest\x12\x13\n\x0bresource_id\x18\x01 \x01(\t\x12\x11\n\tholder_id\x18\x02 \x01(\x05\x12\x11\n\ttimestamp\x18\x03 \x01(\x05\"-\n\tLockReply\x12\x0f\n\x07granted\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2G\n\tBugTriage\x12:\n\nAnalyzeBug\x12\x12.triage.BugRequest\x1a\x16.triage.TriageResponse\"\x00\x32M\n\x0cMutexService\x12=\n\rRequestAccess\x12\x15.triage.AccessRequest\x1a\x13.triage.AccessReply\"\x00\x32\x7f\n\x0bLockService\x12\x37\n\x0b\x41\x63quireLock\x12\x13.triage.LockRequest\x1a\x11.triage.LockReply\"\x00\x12\x37\n\x0bReleaseLock\x12\x13.triage.LockRequest\x1a\x11.triage.LockReply\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -39,8 +39,14 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_ACCESSREQUEST']._serialized_end=279
   _globals['_ACCESSREPLY']._serialized_start=281
   _globals['_ACCESSREPLY']._serialized_end=330
-  _globals['_BUGTRIAGE']._serialized_start=332
-  _globals['_BUGTRIAGE']._serialized_end=403
-  _globals['_MUTEXSERVICE']._serialized_start=405
-  _globals['_MUTEXSERVICE']._serialized_end=482
+  _globals['_LOCKREQUEST']._serialized_start=332
+  _globals['_LOCKREQUEST']._serialized_end=404
+  _globals['_LOCKREPLY']._serialized_start=406
+  _globals['_LOCKREPLY']._serialized_end=451
+  _globals['_BUGTRIAGE']._serialized_start=453
+  _globals['_BUGTRIAGE']._serialized_end=524
+  _globals['_MUTEXSERVICE']._serialized_start=526
+  _globals['_MUTEXSERVICE']._serialized_end=603
+  _globals['_LOCKSERVICE']._serialized_start=605
+  _globals['_LOCKSERVICE']._serialized_end=732
 # @@protoc_insertion_point(module_scope)
