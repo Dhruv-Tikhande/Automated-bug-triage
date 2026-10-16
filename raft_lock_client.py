@@ -1,3 +1,4 @@
+import os
 import sys
 
 import grpc
@@ -6,10 +7,11 @@ import triage_pb2
 import triage_pb2_grpc
 
 
-def run(port):
-    address = f"localhost:{port}"
+def run(target):
+    address = target if ":" in target else f"localhost:{target}"
+    channel_target = f"dns:///{address}" if not address.startswith("localhost:") else address
 
-    with grpc.insecure_channel(address) as channel:
+    with grpc.insecure_channel(channel_target) as channel:
         stub = triage_pb2_grpc.LockServiceStub(channel)
 
         reply = stub.AcquireLock(
@@ -38,4 +40,4 @@ def run(port):
 
 
 if __name__ == "__main__":
-    run(sys.argv[1])
+    run(sys.argv[1] if len(sys.argv) > 1 else os.environ.get("TARGET_ADDR", "localhost:60401"))

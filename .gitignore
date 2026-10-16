@@ -7,8 +7,13 @@
 # Python / Virtual Environments
 __pycache__/
 venv/
+.venv/
 env/
 .env
+
+# Distributed file system runtime state
+dfs_data/
+.dfs_client_clock
 
 # Node / React Frontend
 node_modules/

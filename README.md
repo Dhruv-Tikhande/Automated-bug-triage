@@ -50,3 +50,9 @@ The default frontend URL is `http://localhost:5173` and the backend API is `http
 - The frontend calls the FastAPI endpoint directly; the gRPC service is not wired into the UI.
 - Model files are generated locally and are intentionally ignored by git.
 - The current training scripts and backend paths should be normalized before relying on them for repeatable runs.
+
+## Distributed Computing Experiment 11
+
+The final lab experiment is a separate gRPC distributed file store with a metadata coordinator, three storage nodes, two replicas per chunk, Lamport-clock file versions, checksum-verified uploads/downloads, heartbeat-based failure detection, and manual replica repair. It runs independently of the bug-triage web application and the earlier gRPC examples.
+
+Follow the complete Windows PowerShell setup, run, failure, repair, and corruption walkthrough in [EXPERIMENT_11.md](EXPERIMENT_11.md). The service definition is in [proto/dfs.proto](proto/dfs.proto); the generated `dfs_pb2.py` and `dfs_pb2_grpc.py` files are checked in so the lab can start after the documented dependency install.

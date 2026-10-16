@@ -1,3 +1,4 @@
+import os
 import random
 import sys
 import threading
@@ -12,14 +13,29 @@ import triage_pb2
 import triage_pb2_grpc
 
 
-ALL_NODES = {
+LOCAL_NODES = {
     "A": "localhost:60401",
     "B": "localhost:60402",
     "C": "localhost:60403",
 }
 
+KUBERNETES_NODES = {
+    "A": "raft-a:60401",
+    "B": "raft-b:60402",
+    "C": "raft-c:60403",
+}
+
+RUN_ENV = os.environ.get("RUN_ENV", "local")
+ALL_NODES = KUBERNETES_NODES if RUN_ENV == "kubernetes" else LOCAL_NODES
+
 HEARTBEAT_INTERVAL = 0.5
 ELECTION_TIMEOUT_RANGE = (1.5, 3.0)
+
+
+def open_peer_channel(address):
+    """Use Kubernetes DNS explicitly while preserving local execution."""
+    target = f"dns:///{address}" if RUN_ENV == "kubernetes" else address
+    return grpc.insecure_channel(target)
 
 
 class RaftNode(
@@ -135,7 +151,7 @@ class RaftNode(
 
         for peer_id, address in self.peers.items():
             try:
-                with grpc.insecure_channel(address) as channel:
+                with open_peer_channel(address) as channel:
                     stub = raft_pb2_grpc.RaftServiceStub(channel)
 
                     reply = stub.RequestVote(
@@ -156,8 +172,11 @@ class RaftNode(
                             self.voted_for = None
                         return
 
-            except grpc.RpcError:
-                self.log(f"No response from {peer_id} (may be down)")
+            except grpc.RpcError as error:
+                self.log(
+                    f"No response from {peer_id}: {error.code()} "
+                    f"{error.details()}"
+                )
 
         with self.lock:
             if (
@@ -189,7 +208,7 @@ class RaftNode(
 
             for peer_id, address in self.peers.items():
                 try:
-                    with grpc.insecure_channel(address) as channel:
+                    with open_peer_channel(address) as channel:
                         stub = raft_pb2_grpc.RaftServiceStub(channel)
 
                         stub.AppendEntries(
@@ -291,7 +310,8 @@ def serve(node_id):
 
     port = ALL_NODES[node_id].split(":")[1]
 
-    server.add_insecure_port(f"localhost:{port}")
+    # Pods must listen beyond loopback so Kubernetes Services can reach them.
+    server.add_insecure_port(f"0.0.0.0:{port}")
     server.start()
 
     print(f"RaftNode-{node_id} listening on {ALL_NODES[node_id]}")

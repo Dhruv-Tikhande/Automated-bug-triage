@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: raft-load-test
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: raft-load-test
+          image: automated-bugs-triage:latest
+          imagePullPolicy: Never
+          command: ["python", "load_test.py"]
+          env:
+            - name: GRPC_DNS_RESOLVER
+              value: native
+            - name: TARGET_ADDR
+              value: raft-a:60401
+            - name: REQUEST_COUNT
+              value: "18"
+            - name: MAX_WORKERS
+              value: "9"
