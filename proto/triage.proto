@@ -39,7 +39,7 @@ message AccessReply {
 }
 
 
-// Experiment 5: Deadlock simulation and resolution
+// Deadlock simulation and resolution
 service LockService {
   rpc AcquireLock (LockRequest) returns (LockReply) {}
   rpc ReleaseLock (LockRequest) returns (LockReply) {}
@@ -56,7 +56,7 @@ message LockReply {
   string message = 2;
 }
 
-// Experiment 6: Least Connections load balancing
+// Least Connections load balancing
 service WorkerService {
   rpc HandleRequest (WorkRequest) returns (WorkReply) {}
 }
@@ -75,7 +75,7 @@ syntax = "proto3";
 
 package eventual_demo;
 
-// Experiment 7: eventual consistency with gossip replication.
+// Eventual consistency with gossip replication
 service ReplicaService {
   rpc SaveValue (ValueUpdate) returns (SaveAck) {}
   rpc SyncUpdate (ValueUpdate) returns (SaveAck) {}
